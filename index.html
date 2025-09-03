@@ -1,0 +1,52 @@
+import { useState } from "react"; import { Card, CardContent } from "@/components/ui/card"; import { Button } from "@/components/ui/button"; import { Input } from "@/components/ui/input"; import { Search } from "lucide-react"; import { motion } from "framer-motion";
+
+const cars = [ { name: "Lamborghini Aventador", price: "$450,000", img: "https://cdn.pixabay.com/photo/2016/11/29/04/17/lamborghini-1867431_1280.jpg", }, { name: "Ferrari LaFerrari", price: "$1,500,000", img: "https://cdn.pixabay.com/photo/2017/01/06/19/15/ferrari-1951336_1280.jpg", }, { name: "Bugatti Chiron", price: "$3,000,000", img: "https://cdn.pixabay.com/photo/2020/05/23/15/34/bugatti-5211866_1280.jpg", }, { name: "McLaren P1", price: "$1,150,000", img: "https://cdn.pixabay.com/photo/2016/11/22/19/15/mclaren-1853354_1280.jpg", }, ];
+
+export default function Dashboard() { const [query, setQuery] = useState("");
+
+const filteredCars = cars.filter((car) => car.name.toLowerCase().includes(query.toLowerCase()) );
+
+return ( <div className="flex h-screen bg-gray-100"> {/* Sidebar */} <aside className="w-64 bg-white shadow-lg p-6 flex flex-col"> <h2 className="text-2xl font-bold mb-6">Supercar Hub</h2> <nav className="space-y-3"> <a href="#" className="block hover:text-blue-600">Dashboard</a> <a href="#" className="block hover:text-blue-600">Cars</a> <a href="#" className="block hover:text-blue-600">Favorites</a> <a href="#" className="block hover:text-blue-600">Profile</a> </nav> </aside>
+
+{/* Main Content */}
+  <main className="flex-1 p-8 overflow-auto">
+    {/* Top Bar */}
+    <div className="flex justify-between items-center mb-8">
+      <h1 className="text-3xl font-bold">Available Supercars</h1>
+      <div className="flex items-center gap-2">
+        <Input
+          type="text"
+          placeholder="Search cars..."
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          className="w-64"
+        />
+        <Button variant="outline"><Search className="w-4 h-4" /></Button>
+      </div>
+    </div>
+
+    {/* Car Cards */}
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      {filteredCars.map((car, i) => (
+        <motion.div
+          key={i}
+          whileHover={{ scale: 1.05 }}
+          transition={{ type: "spring", stiffness: 200 }}
+        >
+          <Card className="rounded-2xl overflow-hidden shadow-lg">
+            <img src={car.img} alt={car.name} className="h-48 w-full object-cover" />
+            <CardContent className="p-4">
+              <h2 className="text-xl font-bold mb-2">{car.name}</h2>
+              <p className="text-gray-600 mb-4">{car.price}</p>
+              <Button className="w-full">Buy Now</Button>
+            </CardContent>
+          </Card>
+        </motion.div>
+      ))}
+    </div>
+  </main>
+</div>
+
+); }
+
+        
